@@ -1,0 +1,24 @@
+[gentoo-ev.org]
+backend = gentoo-ev-org:80
+aliases =
+    www.gentoo-ev.org
+        gentoo-ev.de
+    www.gentoo-ev.de
+        gentooev.org
+    www.gentooev.org
+        gentooev.de
+    www.gentooev.de
+
+
+[images.gentoo-ev.org]
+backend = images-gentoo-ev-org:80
+
+
+[gentoo.de]
+backend = gentoo-de:80
+aliases =
+    www.gentoo.de
+        gentoo.eu
+    www.gentoo.eu
+        portage.de
+    www.portage.de

@@ -1,0 +1,88 @@
+#! /usr/bin/env python2
+# Copyright (C) 2018 Sebastian Pipping <sebastian@pipping.org>
+# Licensed under GNU Affero GPL v3 or later
+
+from __future__ import print_function
+
+from argparse import ArgumentParser
+from ConfigParser import SafeConfigParser, NoOptionError
+from collections import namedtuple
+from textwrap import dedent
+
+
+class CaddyfileGenerator(object):
+
+    Site = namedtuple('Site', [
+        'alias_domains',
+        'backend_authority',
+        'domain',
+    ])
+
+    def __init__(self):
+        self._redir_target_of = {}
+        self._backend_of = {}
+
+    def add(self, site):
+        self._backend_of[site.domain] = site.backend_authority
+        for domain in site.alias_domains:
+            self._redir_target_of[domain] = site.domain
+
+    def write_to(self, fp):
+        print(dedent("""\
+            # NOTE: This file has been generated, do not edit
+            (common) {
+                log / stdout "{combined}"
+                errors stderr
+            }
+        """), file=fp)
+
+        for domain, backend_authority in sorted(self._backend_of.items()):
+            print(dedent("""\
+                %s {
+                    import common
+                    proxy / %s
+                }
+            """) % (domain, backend_authority), file=fp)
+
+        for source_domain, target_domain in sorted(
+                self._redir_target_of.items()):
+            print(dedent("""\
+                %s {
+                    import common
+                    redir https://%s{uri}
+                }
+            """) % (source_domain, target_domain), file=fp)
+
+
+def run(options):
+    config = SafeConfigParser()
+    with open(options.config_filename) as fin:
+        config.readfp(fin, options.config_filename)
+
+    caddyfile = CaddyfileGenerator()
+    for domain in config.sections():
+        try:
+            alias_domains = config.get(domain, 'aliases').split()
+        except NoOptionError:
+            alias_domains = []
+        backend_authority = config.get(domain, 'backend')
+
+        site = CaddyfileGenerator.Site(alias_domains, backend_authority,
+                                       domain)
+        caddyfile.add(site)
+
+    with open(options.output_filename, 'w') as fout:
+        caddyfile.write_to(fout)
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument('--config', dest='config_filename', metavar='FILENAME',
+                        default='sites.cfg',
+                        help='Path to config file to read (%(default)s)')
+    parser.add_argument('--output', dest='output_filename', metavar='FILENAME',
+                        default='Caddyfile',
+                        help='Path to write Caddyfile to (%(default)s)')
+    options = parser.parse_args()
+
+    run(options)

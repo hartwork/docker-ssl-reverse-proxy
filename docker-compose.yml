@@ -1,0 +1,21 @@
+# Copyright (C) 2018 Sebastian Pipping <sebastian@pipping.org>
+# Licensed under GNU Affero GPL v3 or later
+
+version: "3"
+
+networks:
+  ssl-reverse-proxy:
+    external: yes
+
+services:
+  ssl-reverse-proxy:
+    image: abiosoft/caddy:no-stats
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - default
+      - ssl-reverse-proxy
+    volumes:
+      - ./Caddyfile:/etc/Caddyfile
+      - ${HOME}/.caddy:/root/.caddy
