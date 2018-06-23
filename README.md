@@ -29,7 +29,7 @@ from a minimal ini-like `sites.cfg` file ([see example](sites.cfg.EXAMPLE.gentoo
      `docker network create --internal ssl-reverse-proxy`
 
   4. Spin up the container:<br>
-     `compose up -d --build`
+     `docker-compose up -d --build`
 
   5. Have backend containers join network `ssl-reverse-proxy`,
      e.g. as done in the proxy's own
