@@ -13,7 +13,9 @@ And that reverse proxy should also run in a Docker container.
 This repository has all of that.  The heavy lifting is done by
 [Caddy](https://caddyserver.com/)
 and there's a [small tool](Caddyfile.generate) to generate Caddy configuration
-from a minimal ini-like `sites.cfg` file ([see example](sites.cfg.EXAMPLE.gentoo-ev)).
+from a minimal
+[ini-like](https://docs.python.org/2/library/configparser.html)
+`sites.cfg` file ([see example](sites.cfg.EXAMPLE.gentoo-ev)).
 
 
 # How to run
