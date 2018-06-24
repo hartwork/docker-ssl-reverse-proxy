@@ -9,7 +9,7 @@ networks:
 
 services:
   ssl-reverse-proxy:
-    image: abiosoft/caddy:no-stats
+    image: "abiosoft/caddy:${CADDY_TAG:-latest}"
     ports:
       - 80:80
       - 443:443
