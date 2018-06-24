@@ -17,6 +17,11 @@ from a minimal
 [ini-like](https://docs.python.org/2/library/configparser.html)
 `sites.cfg` file for you ([see example](sites.cfg.EXAMPLE.gentoo-ev)).
 
+Thanks to Abiola Ibrahim ([@abiosoft](https://github.com/abiosoft))
+for sharing his
+[Caddy Docker images](https://github.com/abiosoft/caddy-docker)
+that I build upon.
+
 
 # Getting Started
 
