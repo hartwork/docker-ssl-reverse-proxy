@@ -15,7 +15,7 @@ This repository has all of that.  The heavy lifting is done by
 and there's a [small tool](Caddyfile.generate) to generate Caddy configuration
 from a minimal
 [ini-like](https://docs.python.org/2/library/configparser.html)
-`sites.cfg` file ([see example](sites.cfg.EXAMPLE.gentoo-ev)).
+`sites.cfg` file for you ([see example](sites.cfg.EXAMPLE.gentoo-ev)).
 
 
 # Getting Started
