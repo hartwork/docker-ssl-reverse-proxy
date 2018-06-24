@@ -45,22 +45,20 @@ from a minimal
 The format is rather simple and has three options only.
 Let's look at this example:
 
-    [gentoo.de]
-    backend = gentoo-de:80
+    [example.org]
+    backend = example-org:80
     aliases =
-        www.gentoo.de
-            gentoo.eu
-        www.gentoo.eu
-            portage.de
-        www.portage.de
+        www.example.org
+            example.net
+        www.example.net
 
-Section name `gentoo.de` sets the master domain name that all alias domains
+Section name `example.org` sets the master domain name that all alias domains
 redirect to.  `backend` points to the hostname and port that serves actual
-content.  Here, `gentoo-de` is the name of the Docker container that
+content.  Here, `example-org` is the name of the Docker container that
 Docker DNS will let us access because we made both containers join external
 network `ssl-reverse-proxy` in their `docker-compose.yml` files.
 `aliases` is an optional list of domian names to have both HTTP and HTTPS
-redirect to master domain `gentoo.de`.
+redirect to master domain `example.org`.
 
 That's it.
 
