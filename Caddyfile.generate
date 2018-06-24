@@ -4,6 +4,7 @@
 
 from __future__ import print_function
 
+import sys
 from argparse import ArgumentParser
 from ConfigParser import SafeConfigParser, NoOptionError
 from collections import namedtuple
@@ -85,4 +86,7 @@ if __name__ == '__main__':
                         help='Path to write Caddyfile to (%(default)s)')
     options = parser.parse_args()
 
-    run(options)
+    try:
+        run(options)
+    except IOError as e:
+        sys.exit(e)
