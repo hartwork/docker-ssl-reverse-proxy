@@ -18,7 +18,7 @@ from a minimal
 `sites.cfg` file ([see example](sites.cfg.EXAMPLE.gentoo-ev)).
 
 
-# How to run
+# Getting Started
 
   1. Create a simple `sites.cfg` file manually
      as seen in the [example](sites.cfg.EXAMPLE.gentoo-ev).
@@ -40,7 +40,7 @@ from a minimal
   6. Enjoy.
 
 
-# A few more words on `sites.cfg`
+# How to write the `sites.cfg` file
 
 The format is rather simple and has three options only.
 Let's look at this example:
