@@ -4,7 +4,7 @@ My situation was this:
 I had multiple Docker containers serving websites on port 80.
 I wanted a single reverse proxy with SSL powered by
 [Let's Encrypt](https://letsencrypt.org/)
-in front of them, that keeps the certificates fresh and supports
+in front of them that keeps certificates fresh and supports
 multiple domain names per website (e.g. with `www.` subdomain and without).
 Plain HTTP should be redirected to HTTPS on the master domain for each website,
 alias domains should redirect to the master domain for both HTTP and HTTPS.
@@ -32,7 +32,7 @@ that I build upon.
      to generate `Caddyfile` from `sites.cfg` for you.
 
   3. Create Docker network `ssl-reverse-proxy` for the reverse proxy
-     and its backend to talk:<br>
+     and its backends to talk:<br>
      `docker network create --internal ssl-reverse-proxy`
 
   4. Spin up the container:<br>
