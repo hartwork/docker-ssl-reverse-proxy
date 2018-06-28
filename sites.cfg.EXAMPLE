@@ -1,0 +1,6 @@
+[example.org]
+backend = example-org:80
+aliases =
+    www.example.org
+        example.net
+    www.example.net
