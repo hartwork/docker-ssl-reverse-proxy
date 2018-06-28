@@ -75,7 +75,9 @@ The `Caddyfile` generated from that very `sites.cfg` would read:
 
     example.org {
         import common
-        proxy / example-org:80
+        proxy / example-org:80 {
+            transparent
+        }
     }
 
     example.net {

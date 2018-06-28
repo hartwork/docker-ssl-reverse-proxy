@@ -41,7 +41,9 @@ class CaddyfileGenerator(object):
             print(dedent("""\
                 %s {
                     import common
-                    proxy / %s
+                    proxy / %s {
+                        transparent
+                    }
                 }
             """) % (domain, backend_authority), file=fp)
 
