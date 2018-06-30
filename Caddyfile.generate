@@ -82,10 +82,12 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--config', dest='config_filename', metavar='FILENAME',
                         default='sites.cfg',
-                        help='Path to config file to read (%(default)s)')
+                        help='Path to config file to read'
+                            ' (default: %(default)s)')
     parser.add_argument('--output', dest='output_filename', metavar='FILENAME',
                         default='Caddyfile',
-                        help='Path to write Caddyfile to (%(default)s)')
+                        help='Path to write Caddyfile to'
+                            ' (default: %(default)s)')
     options = parser.parse_args()
 
     try:
