@@ -9,7 +9,7 @@ from collections import namedtuple
 from textwrap import dedent
 
 
-class CaddyfileGenerator(object):
+class CaddyfileGenerator:
 
     Site = namedtuple('Site', [
         'alias_domains',
