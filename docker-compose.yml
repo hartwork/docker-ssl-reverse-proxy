@@ -19,3 +19,7 @@ services:
     volumes:
       - ./Caddyfile:/etc/Caddyfile
       - ${HOME}/.caddy:/root/.caddy
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
