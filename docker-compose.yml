@@ -21,7 +21,10 @@ services:
       - ssl-reverse-proxy
     volumes:
       - ./Caddyfile:/etc/Caddyfile
-      - ${HOME}/.caddy:/home/nobody/.caddy
+        # Uncomment only after:
+        #   $ mkdir caddy-home
+        #   $ sudo chown nobody:nogroup caddy-home
+    # - ./caddy-home:/home/nobody/.caddy
     user: '65534:65534'  # i.e. nobody:nogroup
     cap_drop:
       - ALL
