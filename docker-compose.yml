@@ -9,7 +9,10 @@ networks:
 
 services:
   ssl-reverse-proxy:
-    image: "abiosoft/caddy:${CADDY_TAG:-latest}"
+    build:
+      context: .
+      args:
+        CADDY_TAG: ${CADDY_TAG:-latest}
     ports:
       - 80:80
       - 443:443
@@ -18,7 +21,8 @@ services:
       - ssl-reverse-proxy
     volumes:
       - ./Caddyfile:/etc/Caddyfile
-      - ${HOME}/.caddy:/root/.caddy
+      - ${HOME}/.caddy:/home/nobody/.caddy
+    user: '65534:65534'  # i.e. nobody:nogroup
     cap_drop:
       - ALL
     cap_add:
