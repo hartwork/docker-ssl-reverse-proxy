@@ -22,7 +22,7 @@ services:
     volumes:
       - ./Caddyfile:/etc/Caddyfile
         # Uncomment only after:
-        #   $ mkdir -m 0700 caddy-home
+        #   $ mkdir -m 0704 caddy-home
         #   $ sudo chown 65534:65534 caddy-home
       # - ./caddy-home:/home/caddy/
     user: '65534:65534'

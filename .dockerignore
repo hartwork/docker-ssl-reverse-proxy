@@ -1,2 +1,2 @@
 # NOTE: current Dockerfile does not do any COPY commands
-*  # to avoid build issues with ./caddy-home/ folder present
+*
