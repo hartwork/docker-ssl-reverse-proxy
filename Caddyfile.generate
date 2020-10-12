@@ -35,27 +35,24 @@ class CaddyfileGenerator:
             (common) {
                 log / stdout "{combined}"
                 errors stderr
-            }
-        """), file=fp)
+            }"""), file=fp)
 
         for domain, backend_authority in sorted(self._backend_of.items()):
-            print(dedent("""\
+            print(dedent("""
                 %s {
                     import common
                     proxy / %s {
                         transparent
                     }
-                }
-            """) % (domain, backend_authority), file=fp)
+                }""") % (domain, backend_authority), file=fp)
 
         for source_domain, target_domain in sorted(
                 self._redir_target_of.items()):
-            print(dedent("""\
+            print(dedent("""
                 %s {
                     import common
                     redir https://%s{uri}
-                }
-            """) % (source_domain, target_domain), file=fp)
+                }""") % (source_domain, target_domain), file=fp)
 
 
 def run(options):
