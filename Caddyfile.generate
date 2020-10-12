@@ -58,7 +58,7 @@ class CaddyfileGenerator:
 def run(options):
     config = ConfigParser()
     with open(options.config_filename) as fin:
-        config.readfp(fin, options.config_filename)
+        config.read_file(fin, options.config_filename)
 
     caddyfile = CaddyfileGenerator()
     for domain in config.sections():
