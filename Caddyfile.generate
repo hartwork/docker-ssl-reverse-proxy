@@ -2,10 +2,13 @@
 # Copyright (C) 2018 Sebastian Pipping <sebastian@pipping.org>
 # Licensed under GNU Affero GPL v3 or later
 
+import subprocess
 import sys
 from argparse import ArgumentParser
 from configparser import ConfigParser, NoOptionError
+from contextlib import suppress
 from collections import namedtuple
+from tempfile import NamedTemporaryFile
 from textwrap import dedent
 
 
@@ -72,8 +75,18 @@ def run(options):
                                        domain)
         caddyfile.add(site)
 
-    with open(options.output_filename, 'w') as fout:
-        caddyfile.write_to(fout)
+    with NamedTemporaryFile() as temp_file:
+        # The idea is to diff against previous content or against
+        # empty file when there is no previos content
+        with suppress(OSError):
+            with open(options.output_filename, 'r+b') as fin:
+                temp_file.file.write(fin.read())
+                temp_file.file.flush()
+
+        with open(options.output_filename, 'w') as fout:
+            caddyfile.write_to(fout)
+
+        subprocess.call(['diff', '-u', temp_file.name, options.output_filename])
 
 
 if __name__ == '__main__':
