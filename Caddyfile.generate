@@ -83,7 +83,13 @@ def run(options):
         with open(options.output_filename, 'w') as fout:
             caddyfile.write_to(fout)
 
-        subprocess.call(['diff', '-u', temp_file.name, options.output_filename])
+        exit_code = subprocess.call(['diff', '-u', temp_file.name,
+                                     options.output_filename])
+
+        # Write stateful output in the format expected by SaltStack
+        if exit_code and options.saltstack:
+            print()
+            print("changed=yes comment='Caddyfile changed'")
 
 
 if __name__ == '__main__':
@@ -96,6 +102,9 @@ if __name__ == '__main__':
                         default='Caddyfile',
                         help='Path to write Caddyfile to'
                             ' (default: %(default)s)')
+    parser.add_argument('--saltstack', action='store_true',
+                        help='Add lines signaling changes to SaltStack'
+                            ' (default: omitted)')
     options = parser.parse_args()
 
     try:
