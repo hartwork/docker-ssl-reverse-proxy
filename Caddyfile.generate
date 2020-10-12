@@ -4,7 +4,7 @@
 
 import sys
 from argparse import ArgumentParser
-from configparser import SafeConfigParser, NoOptionError
+from configparser import ConfigParser, NoOptionError
 from collections import namedtuple
 from textwrap import dedent
 
@@ -56,7 +56,7 @@ class CaddyfileGenerator:
 
 
 def run(options):
-    config = SafeConfigParser()
+    config = ConfigParser()
     with open(options.config_filename) as fin:
         config.readfp(fin, options.config_filename)
 
