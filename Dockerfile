@@ -1,7 +1,8 @@
 # Copyright (C) 2018 Sebastian Pipping <sebastian@pipping.org>
 # Licensed under GNU Affero GPL v3 or later
 
-ARG CADDY_TAG=latest
+# NOTE Sync default tag with docker-compose.yml
+ARG CADDY_TAG=1.0.3
 FROM abiosoft/caddy:${CADDY_TAG}
 
 # Install system upgrades
