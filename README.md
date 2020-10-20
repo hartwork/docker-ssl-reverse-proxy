@@ -19,8 +19,9 @@ from a minimal
 
 Thanks to Abiola Ibrahim ([@abiosoft](https://github.com/abiosoft))
 for sharing his
-[Caddy Docker images](https://github.com/abiosoft/caddy-docker)
-that I build upon.
+[Caddy 1.x.x Docker images](https://github.com/abiosoft/caddy-docker)
+that I build upon prior to switching to
+[official Caddy 2.x.x Docker images](https://hub.docker.com/_/caddy).
 
 
 # Getting Started

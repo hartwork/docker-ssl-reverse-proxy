@@ -13,7 +13,7 @@ services:
       context: .
       args:
         # NOTE Keep default tag in sync with Dockerfile
-        CADDY_TAG: ${CADDY_TAG:-1.0.3}
+        CADDY_TAG: ${CADDY_TAG:-2.2.1-alpine}
     ports:
       - 80:80
       - 443:443
@@ -21,7 +21,7 @@ services:
       - default
       - ssl-reverse-proxy
     volumes:
-      - ./Caddyfile:/etc/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
         # Uncomment only after:
         #   $ mkdir -m 0704 caddy-home
         #   $ sudo chown 65534:65534 caddy-home

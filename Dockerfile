@@ -2,8 +2,8 @@
 # Licensed under GNU Affero GPL v3 or later
 
 # NOTE Keep default tag in sync with docker-compose.yml
-ARG CADDY_TAG=1.0.3
-FROM abiosoft/caddy:${CADDY_TAG}
+ARG CADDY_TAG=2.2.1-alpine
+FROM caddy:${CADDY_TAG}
 
 # Install system upgrades
 RUN apk update \
@@ -32,6 +32,8 @@ RUN useradd \
         caddy
 RUN chmod 0700 /home/caddy/
 ENV HOME=/home/caddy/
+ENV XDG_CONFIG_HOME=/home/caddy/config
+ENV XDG_DATA_HOME=/home/caddy/data
 VOLUME /home/caddy/
 
 # Uninstall direct build dependencies
