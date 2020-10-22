@@ -2,8 +2,8 @@
 # Licensed under GNU Affero GPL v3 or later
 
 # NOTE Keep default tag in sync with docker-compose.yml
-ARG CADDY_TAG=1.0.3
-FROM abiosoft/caddy:${CADDY_TAG}
+ARG CADDY_TAG=2.2.1-alpine
+FROM caddy:${CADDY_TAG}
 
 # Install system upgrades
 RUN apk update \
@@ -14,6 +14,9 @@ RUN apk update \
 RUN apk update \
         && \
     apk add \
+            bash \
+            coreutils \
+            jq \
             libcap \
             libcap-ng-utils \
             shadow
@@ -32,6 +35,8 @@ RUN useradd \
         caddy
 RUN chmod 0700 /home/caddy/
 ENV HOME=/home/caddy/
+ENV XDG_CONFIG_HOME=/home/caddy/config
+ENV XDG_DATA_HOME=/home/caddy/data
 VOLUME /home/caddy/
 
 # Uninstall direct build dependencies
@@ -39,3 +44,9 @@ RUN apk del libcap libcap-ng libcap-ng-utils linux-pam shadow
 
 # Wipe apk cache
 RUN rm -fv /var/cache/apk/*
+
+COPY --chown=65534:65534 docker-entrypoint.sh format-caddy-json-access-log.sh  /
+
+# CMD is based on the official Caddy 2.x.x Docker image
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

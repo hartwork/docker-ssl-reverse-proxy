@@ -1,2 +1,6 @@
-# NOTE: current Dockerfile does not do any COPY commands
+# Ignore everything
 *
+
+# Unignore selected files
+!docker-entrypoint.sh
+!format-caddy-json-access-log.sh
