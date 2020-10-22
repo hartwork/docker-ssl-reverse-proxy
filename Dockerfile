@@ -14,6 +14,9 @@ RUN apk update \
 RUN apk update \
         && \
     apk add \
+            bash \
+            coreutils \
+            jq \
             libcap \
             libcap-ng-utils \
             shadow
@@ -41,3 +44,9 @@ RUN apk del libcap libcap-ng libcap-ng-utils linux-pam shadow
 
 # Wipe apk cache
 RUN rm -fv /var/cache/apk/*
+
+COPY --chown=65534:65534 docker-entrypoint.sh format-caddy-json-access-log.sh  /
+
+# CMD is based on the official Caddy 2.x.x Docker image
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
