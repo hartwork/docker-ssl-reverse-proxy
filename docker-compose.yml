@@ -22,9 +22,9 @@ services:
       - ssl-reverse-proxy
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-        # Uncomment only after:
-        #   $ mkdir -m 0704 caddy-home
-        #   $ sudo chown 65534:65534 caddy-home
+      # Uncomment (or add to docker-compose.override.yml) only after:
+      #   $ mkdir -m 0704 caddy-home
+      #   $ sudo chown 65534:65534 caddy-home
       # - ./caddy-home:/home/caddy/
     user: '65534:65534'
     cap_drop:
