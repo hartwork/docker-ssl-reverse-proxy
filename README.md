@@ -70,15 +70,14 @@ The `Caddyfile` generated from that very `sites.cfg` would read:
 
     # NOTE: This file has been generated, do not edit
     (common) {
-        log / stdout "{combined}"
-        errors stderr
+        log {
+            output stdout
+        }
     }
 
     example.org {
         import common
-        proxy / example-org:80 {
-            transparent
-        }
+        reverse_proxy example-org:80
     }
 
     example.net {
