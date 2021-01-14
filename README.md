@@ -63,7 +63,7 @@ redirect to.  `backend` points to the hostname and port that serves actual
 content.  Here, `example-org` is the name of the Docker container that
 Docker DNS will let us access because we made both containers join external
 network `ssl-reverse-proxy` in their `docker-compose.yml` files.
-`aliases` is an optional list of domian names to have both HTTP and HTTPS
+`aliases` is an optional list of domain names to have both HTTP and HTTPS
 redirect to master domain `example.org`.  That's it.
 
 The `Caddyfile` generated from that very `sites.cfg` would read:
