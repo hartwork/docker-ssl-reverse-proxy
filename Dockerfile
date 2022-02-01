@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Sebastian Pipping <sebastian@pipping.org>
+# Copyright (C) 2018-2022 Sebastian Pipping <sebastian@pipping.org>
 # Licensed under GNU Affero GPL v3 or later
 
 # NOTE Keep default tag in sync with docker-compose.yml
