@@ -2,7 +2,7 @@
 # Licensed under GNU Affero GPL v3 or later
 
 # NOTE Keep default tag in sync with docker-compose.yml
-ARG CADDY_TAG=2.2.1-alpine
+ARG CADDY_TAG=2.4.6-alpine
 FROM caddy:${CADDY_TAG}
 
 # Install system upgrades
