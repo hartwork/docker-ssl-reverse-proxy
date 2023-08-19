@@ -13,7 +13,7 @@ services:
       context: .
       args:
         # NOTE Keep default tag in sync with Dockerfile
-        CADDY_TAG: ${CADDY_TAG:-2.7.2-alpine}
+        CADDY_TAG: ${CADDY_TAG:-2.7.4-alpine}
     ports:
       - 80:80
       - 443:443
