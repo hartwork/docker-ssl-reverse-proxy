@@ -70,6 +70,7 @@ The `Caddyfile` generated from that very `sites.cfg` would read:
 
     # NOTE: This file has been generated, do not edit
     (common) {
+        encode zstd gzip
         log {
             output stdout
         }

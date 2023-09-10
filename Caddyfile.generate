@@ -33,6 +33,7 @@ class CaddyfileGenerator:
         print(dedent("""\
             # NOTE: This file has been generated, do not edit
             (common) {
+                encode zstd gzip
                 log {
                     output stdout
                 }
