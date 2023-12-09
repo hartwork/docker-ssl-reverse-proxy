@@ -32,6 +32,7 @@ RUN useradd \
         --home-dir /home/caddy/ \
         --non-unique --uid 65534 --gid 65534 \
         -K MAIL_DIR=/var/empty \
+        -K UID_MAX=65534 \
         caddy
 RUN chmod 0700 /home/caddy/
 ENV HOME=/home/caddy/
