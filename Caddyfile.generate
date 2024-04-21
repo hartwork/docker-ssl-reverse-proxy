@@ -43,7 +43,9 @@ class CaddyfileGenerator:
             print(dedent("""
                 %s {
                     import common
-                    reverse_proxy %s
+                    reverse_proxy %s {
+                        header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+                    }
                 }""") % (domain, backend_authority), file=fp)
 
         for source_domain, target_domain in sorted(

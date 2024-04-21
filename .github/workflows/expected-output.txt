@@ -1,6 +1,6 @@
---- /tmp/tmpcdry5mph	2024-04-21 19:36:45.813805199 +0200
-+++ Caddyfile	2024-04-21 19:36:45.813805199 +0200
-@@ -0,0 +1,27 @@
+--- /tmp/tmphswiy7sf	2024-04-21 20:02:19.909949425 +0200
++++ Caddyfile	2024-04-21 20:02:19.909949425 +0200
+@@ -0,0 +1,29 @@
 +# NOTE: This file has been generated, do not edit
 +(common) {
 +    encode zstd gzip
@@ -11,7 +11,9 @@
 +
 +example.org {
 +    import common
-+    reverse_proxy example-org:80
++    reverse_proxy example-org:80 {
++        header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
++    }
 +}
 +
 +example.net {
