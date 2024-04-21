@@ -1,0 +1,32 @@
+--- /tmp/tmpcdry5mph	2024-04-21 19:36:45.813805199 +0200
++++ Caddyfile	2024-04-21 19:36:45.813805199 +0200
+@@ -0,0 +1,27 @@
++# NOTE: This file has been generated, do not edit
++(common) {
++    encode zstd gzip
++    log {
++        output stdout
++    }
++}
++
++example.org {
++    import common
++    reverse_proxy example-org:80
++}
++
++example.net {
++    import common
++    redir https://example.org{uri}
++}
++
++www.example.net {
++    import common
++    redir https://example.org{uri}
++}
++
++www.example.org {
++    import common
++    redir https://example.org{uri}
++}
+
+changed=yes comment='Caddyfile changed'
