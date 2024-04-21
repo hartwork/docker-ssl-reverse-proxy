@@ -1,0 +1,36 @@
+# Copyright (c) 2024 Sebastian Pipping <sebastian@pipping.org>
+# Licensed under GNU Affero GPL v3 or later
+
+name: Run smoke test
+
+# Drop permissions to minimum for security
+permissions:
+  contents: read
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '0 16 * * 5'  # Every Friday 4pm
+  workflow_dispatch:
+
+jobs:
+  smoke_test:
+    name: Run the test suite
+    strategy:
+      matrix:
+        python-version: [3.8, 3.12]  # no particular need for in-between versions
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633  # v4.1.2
+    - uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d  # v5.1.0
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Run smoke test
+      run: |
+        set -x
+        python3 --version
+        ./Caddyfile.generate --config sites.cfg.EXAMPLE --saltstack > actual-output.txt
+        diff -u0 \
+            <(tail -n +3 .github/workflows/expected-output.txt) \
+            <(tail -n +3 actual-output.txt)
