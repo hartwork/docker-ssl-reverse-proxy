@@ -1,0 +1,59 @@
+# Copyright (c) 2025 Sebastian Pipping <sebastian@pipping.org>
+# Licensed under GNU Affero GPL v3 or later
+
+name: Detect new Caddy release
+
+on:
+  schedule:
+    - cron: '0 2 * * 5'  # Every Friday at 2am
+  workflow_dispatch:
+
+# NOTE: This will drop all permissions from GITHUB_TOKEN except metadata read,
+#       and then (re)add the ones listed below:
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  caddy_detect_new_release:
+    name: Detect new Caddy release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Check for new Caddy release
+        run: |-
+          set -x
+          which jq skopeo
+          caddy_image="$(\
+              skopeo --override-os linux inspect docker://caddy \
+              | jq '.RepoTags' \
+              | grep -- '[0-9]\+\.[0-9]\+\.[0-9]\+-alpine' \
+              | sort -V | tee /dev/stderr \
+              | tail -n1 \
+              | awk -F'"' '{print $2}'\
+          )"
+          git grep -l CADDY_TAG | xargs sed "/CADDY_TAG/ s,[0-9]\+\.[0-9]\+\.[0-9]\+-alpine,${caddy_image}," -i
+          git diff
+
+      - name: Create pull request from changes (if any)
+        id: create-pull-request
+        uses: peter-evans/create-pull-request@67ccf781d68cd99b580ae25a5c18a1cc84ffff1f  # v7.0.6
+        with:
+          author: 'caddy <caddy@tools.invalid>'
+          base: master
+          body: |-
+            For your consideration.
+
+            :warning: Please **CLOSE AND RE-OPEN** this pull request so that [further workflow runs get triggered](https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs) for this pull request.
+          branch: caddy-autoupdate
+          commit-message: "Bump Caddy to latest release"
+          delete-branch: true
+          draft: true
+          labels: enhancement
+          title: "Bump Caddy to latest release"
+
+      - name: Log pull request URL
+        if: "${{ steps.create-pull-request.outputs.pull-request-url }}"
+        run: |
+          echo "Pull request URL is: ${{ steps.create-pull-request.outputs.pull-request-url }}"
