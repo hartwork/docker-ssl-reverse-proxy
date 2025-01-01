@@ -113,19 +113,19 @@ if __name__ == "__main__":
         dest="config_filename",
         metavar="FILENAME",
         default="sites.cfg",
-        help="Path to config file to read" " (default: %(default)s)",
+        help="Path to config file to read (default: %(default)s)",
     )
     parser.add_argument(
         "--output",
         dest="output_filename",
         metavar="FILENAME",
         default="Caddyfile",
-        help="Path to write Caddyfile to" " (default: %(default)s)",
+        help="Path to write Caddyfile to (default: %(default)s)",
     )
     parser.add_argument(
         "--saltstack",
         action="store_true",
-        help="Add lines signaling changes to SaltStack" " (default: omitted)",
+        help="Add lines signaling changes to SaltStack (default: omitted)",
     )
     options = parser.parse_args()
 
