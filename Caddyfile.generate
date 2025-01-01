@@ -13,12 +13,14 @@ from textwrap import dedent
 
 
 class CaddyfileGenerator:
-
-    Site = namedtuple('Site', [
-        'alias_domains',
-        'backend_authority',
-        'domain',
-    ])
+    Site = namedtuple(
+        "Site",
+        [
+            "alias_domains",
+            "backend_authority",
+            "domain",
+        ],
+    )
 
     def __init__(self):
         self._redir_target_of = {}
@@ -30,31 +32,41 @@ class CaddyfileGenerator:
             self._redir_target_of[domain] = site.domain
 
     def write_to(self, fp):
-        print(dedent("""\
+        print(
+            dedent("""\
             # NOTE: This file has been generated, do not edit
             (common) {
                 encode zstd gzip
                 log {
                     output stdout
                 }
-            }"""), file=fp)
+            }"""),
+            file=fp,
+        )
 
         for domain, backend_authority in sorted(self._backend_of.items()):
-            print(dedent("""
+            print(
+                dedent("""
                 %s {
                     import common
                     reverse_proxy %s {
                         header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
                     }
-                }""") % (domain, backend_authority), file=fp)
+                }""")
+                % (domain, backend_authority),
+                file=fp,
+            )
 
-        for source_domain, target_domain in sorted(
-                self._redir_target_of.items()):
-            print(dedent("""
+        for source_domain, target_domain in sorted(self._redir_target_of.items()):
+            print(
+                dedent("""
                 %s {
                     import common
                     redir https://%s{uri}
-                }""") % (source_domain, target_domain), file=fp)
+                }""")
+                % (source_domain, target_domain),
+                file=fp,
+            )
 
 
 def run(options):
@@ -65,28 +77,28 @@ def run(options):
     caddyfile = CaddyfileGenerator()
     for domain in config.sections():
         try:
-            alias_domains = config.get(domain, 'aliases').split()
+            alias_domains = config.get(domain, "aliases").split()
         except NoOptionError:
             alias_domains = []
-        backend_authority = config.get(domain, 'backend')
+        backend_authority = config.get(domain, "backend")
 
-        site = CaddyfileGenerator.Site(alias_domains, backend_authority,
-                                       domain)
+        site = CaddyfileGenerator.Site(alias_domains, backend_authority, domain)
         caddyfile.add(site)
 
     with NamedTemporaryFile() as temp_file:
         # The idea is to diff against previous content or against
         # empty file when there is no previos content
         with suppress(OSError):
-            with open(options.output_filename, 'r+b') as fin:
+            with open(options.output_filename, "r+b") as fin:
                 temp_file.file.write(fin.read())
                 temp_file.file.flush()
 
-        with open(options.output_filename, 'w') as fout:
+        with open(options.output_filename, "w") as fout:
             caddyfile.write_to(fout)
 
-        exit_code = subprocess.call(['diff', '-u', temp_file.name,
-                                     options.output_filename])
+        exit_code = subprocess.call(
+            ["diff", "-u", temp_file.name, options.output_filename]
+        )
 
         # Write stateful output in the format expected by SaltStack
         if exit_code and options.saltstack:
@@ -94,19 +106,27 @@ def run(options):
             print("changed=yes comment='Caddyfile changed'")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--config', dest='config_filename', metavar='FILENAME',
-                        default='sites.cfg',
-                        help='Path to config file to read'
-                            ' (default: %(default)s)')
-    parser.add_argument('--output', dest='output_filename', metavar='FILENAME',
-                        default='Caddyfile',
-                        help='Path to write Caddyfile to'
-                            ' (default: %(default)s)')
-    parser.add_argument('--saltstack', action='store_true',
-                        help='Add lines signaling changes to SaltStack'
-                            ' (default: omitted)')
+    parser.add_argument(
+        "--config",
+        dest="config_filename",
+        metavar="FILENAME",
+        default="sites.cfg",
+        help="Path to config file to read" " (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--output",
+        dest="output_filename",
+        metavar="FILENAME",
+        default="Caddyfile",
+        help="Path to write Caddyfile to" " (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--saltstack",
+        action="store_true",
+        help="Add lines signaling changes to SaltStack" " (default: omitted)",
+    )
     options = parser.parse_args()
 
     try:
