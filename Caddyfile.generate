@@ -52,7 +52,7 @@ class CaddyfileGenerator:
                     reverse_proxy %s {
                         header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
                     }
-                }""")
+                }""")  # noqa: E501
                 % (domain, backend_authority),
                 file=fp,
             )
