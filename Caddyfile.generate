@@ -5,9 +5,9 @@
 import subprocess
 import sys
 from argparse import ArgumentParser
+from collections import namedtuple
 from configparser import ConfigParser, NoOptionError
 from contextlib import suppress
-from collections import namedtuple
 from tempfile import NamedTemporaryFile
 from textwrap import dedent
 
