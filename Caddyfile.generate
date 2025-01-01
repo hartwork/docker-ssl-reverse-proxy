@@ -96,7 +96,7 @@ def run(options):
         with open(options.output_filename, "w") as fout:
             caddyfile.write_to(fout)
 
-        exit_code = subprocess.call(
+        exit_code = subprocess.call(  # noqa: S603
             ["diff", "-u", temp_file.name, options.output_filename],
         )
 
