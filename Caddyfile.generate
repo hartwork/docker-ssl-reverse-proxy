@@ -88,7 +88,7 @@ def run(options):
     with NamedTemporaryFile() as temp_file:
         # The idea is to diff against previous content or against
         # empty file when there is no previos content
-        with suppress(OSError):
+        with suppress(OSError):  # noqa: SIM117
             with open(options.output_filename, "r+b") as fin:
                 temp_file.file.write(fin.read())
                 temp_file.file.flush()
