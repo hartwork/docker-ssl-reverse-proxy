@@ -97,7 +97,7 @@ def run(options):
             caddyfile.write_to(fout)
 
         exit_code = subprocess.call(
-            ["diff", "-u", temp_file.name, options.output_filename]
+            ["diff", "-u", temp_file.name, options.output_filename],
         )
 
         # Write stateful output in the format expected by SaltStack
