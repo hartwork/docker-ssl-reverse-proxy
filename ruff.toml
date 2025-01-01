@@ -1,0 +1,19 @@
+indent-width = 4
+line-length = 99
+target-version = "py39"
+
+[lint]
+select = [
+    "ALL",
+]
+
+ignore = [
+    "ANN",     # flake8-annotations
+    "D1",      # Missing docstring in public ...
+    "D203",    # one-blank-line-before-class, to unclash with D211
+    "D212",    # multi-line-summary-first-line, to unclash with D213
+    "PTH123",  # `open()` should be replaced by `Path.open()`
+    "PYI024",  # Use `typing.NamedTuple` instead of `collections.namedtuple`
+    "S607",    # Starting a process with a partial executable path
+    "T201",    # `print` found
+]
