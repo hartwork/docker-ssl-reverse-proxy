@@ -34,25 +34,25 @@ class CaddyfileGenerator:
     def write_to(self, fp):
         print(
             dedent("""\
-            # NOTE: This file has been generated, do not edit
-            (common) {
-                encode zstd gzip
-                log {
-                    output stdout
-                }
-            }"""),
+                # NOTE: This file has been generated, do not edit
+                (common) {
+                    encode zstd gzip
+                    log {
+                        output stdout
+                    }
+                }"""),
             file=fp,
         )
 
         for domain, backend_authority in sorted(self._backend_of.items()):
             print(
                 dedent("""
-                %s {
-                    import common
-                    reverse_proxy %s {
-                        header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
-                    }
-                }""")  # noqa: E501
+                    %s {
+                        import common
+                        reverse_proxy %s {
+                            header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+                        }
+                    }""")  # noqa: E501
                 % (domain, backend_authority),
                 file=fp,
             )
@@ -60,10 +60,10 @@ class CaddyfileGenerator:
         for source_domain, target_domain in sorted(self._redir_target_of.items()):
             print(
                 dedent("""
-                %s {
-                    import common
-                    redir https://%s{uri}
-                }""")
+                    %s {
+                        import common
+                        redir https://%s{uri}
+                    }""")
                 % (source_domain, target_domain),
                 file=fp,
             )
