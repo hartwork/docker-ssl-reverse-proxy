@@ -45,6 +45,9 @@ class CaddyfileGenerator:
         )
 
         for domain, backend_authority in sorted(self._backend_of.items()):
+            if backend_authority is None:
+                continue
+
             print(
                 dedent("""
                     %s {
@@ -80,7 +83,11 @@ def run(options):
             alias_domains = config.get(domain, "aliases").split()
         except NoOptionError:
             alias_domains = []
-        backend_authority = config.get(domain, "backend")
+
+        try:
+            backend_authority = config.get(domain, "backend")
+        except NoOptionError:
+            backend_authority = None
 
         site = CaddyfileGenerator.Site(alias_domains, backend_authority, domain)
         caddyfile.add(site)
