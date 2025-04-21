@@ -20,6 +20,7 @@ class CaddyfileGenerator:
             "alias_domains",
             "backend_authority",
             "domain",
+            "hsts_preload",
         ],
     )
 
@@ -48,15 +49,19 @@ class CaddyfileGenerator:
         sites_with_alias_domains: list[self.Site] = [s for s in self._sites if s.alias_domains]
 
         for site in sorted(sites_with_backends, key=attrgetter("domain")):
+            hsts_header_value = "max-age=63072000; includeSubDomains"
+            if site.hsts_preload:
+                hsts_header_value += "; preload"
+
             print(
                 dedent("""
                     %s {
                         import common
                         reverse_proxy %s {
-                            header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+                            header_down +Strict-Transport-Security "%s"
                         }
-                    }""")  # noqa: E501
-                % (site.domain, site.backend_authority),
+                    }""")
+                % (site.domain, site.backend_authority, hsts_header_value),
                 file=fp,
             )
 
@@ -90,7 +95,9 @@ def run(options):
         except NoOptionError:
             backend_authority = None
 
-        site = CaddyfileGenerator.Site(alias_domains, backend_authority, domain)
+        hsts_preload = config.getboolean(domain, "hsts_preload", fallback=False)
+
+        site = CaddyfileGenerator.Site(alias_domains, backend_authority, domain, hsts_preload)
         caddyfile.add(site)
 
     with NamedTemporaryFile() as temp_file:

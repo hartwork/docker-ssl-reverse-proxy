@@ -79,7 +79,7 @@ The `Caddyfile` generated from that very `sites.cfg` would read:
     example.org {
         import common
         reverse_proxy example-org:80 {
-            header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+            header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains"
         }
     }
 
