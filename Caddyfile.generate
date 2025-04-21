@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from collections import namedtuple
 from configparser import ConfigParser, NoOptionError
 from contextlib import suppress
+from operator import attrgetter
 from tempfile import NamedTemporaryFile
 from textwrap import dedent
 
@@ -23,13 +24,10 @@ class CaddyfileGenerator:
     )
 
     def __init__(self):
-        self._redir_target_of = {}
-        self._backend_of = {}
+        self._sites = []
 
     def add(self, site):
-        self._backend_of[site.domain] = site.backend_authority
-        for domain in site.alias_domains:
-            self._redir_target_of[domain] = site.domain
+        self._sites.append(site)
 
     def write_to(self, fp):
         print(
@@ -44,10 +42,12 @@ class CaddyfileGenerator:
             file=fp,
         )
 
-        for domain, backend_authority in sorted(self._backend_of.items()):
-            if backend_authority is None:
-                continue
+        sites_with_backends: list[self.Site] = [
+            s for s in self._sites if s.backend_authority is not None
+        ]
+        sites_with_alias_domains: list[self.Site] = [s for s in self._sites if s.alias_domains]
 
+        for site in sorted(sites_with_backends, key=attrgetter("domain")):
             print(
                 dedent("""
                     %s {
@@ -56,20 +56,21 @@ class CaddyfileGenerator:
                             header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
                         }
                     }""")  # noqa: E501
-                % (domain, backend_authority),
+                % (site.domain, site.backend_authority),
                 file=fp,
             )
 
-        for source_domain, target_domain in sorted(self._redir_target_of.items()):
-            print(
-                dedent("""
-                    %s {
-                        import common
-                        redir https://%s{uri}
-                    }""")
-                % (source_domain, target_domain),
-                file=fp,
-            )
+        for site in sorted(sites_with_alias_domains, key=attrgetter("domain")):
+            for alias_domain in sorted(site.alias_domains):
+                print(
+                    dedent("""
+                        %s {
+                            import common
+                            redir https://%s{uri}
+                        }""")
+                    % (alias_domain, site.domain),
+                    file=fp,
+                )
 
 
 def run(options):
