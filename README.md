@@ -48,7 +48,7 @@ that I build upon prior to switching to
 
 # How to write the `sites.cfg` file
 
-The format is rather simple and has three options only.
+The format is rather simple and has four options only.
 Let's look at this example:
 
     [example.org]
@@ -64,7 +64,13 @@ content.  Here, `example-org` is the name of the Docker container that
 Docker DNS will let us access because we made both containers join external
 network `ssl-reverse-proxy` in their `docker-compose.yml` files.
 `aliases` is an optional list of domain names to have both HTTP and HTTPS
-redirect to master domain `example.org`.  That's it.
+redirect to master domain `example.org`.
+Adding `hsts_preload = true` is optional, defaults to false, and extends the
+[HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security)
+response headers to
+[unlock addition to the browser preload list](https://hstspreload.org/#submission-requirements)
+at [https://hstspreload.org/](https://hstspreload.org/).
+That's it.
 
 The `Caddyfile` generated from that very `sites.cfg` would read:
 
@@ -79,7 +85,7 @@ The `Caddyfile` generated from that very `sites.cfg` would read:
     example.org {
         import common
         reverse_proxy example-org:80 {
-            header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+            header_down +Strict-Transport-Security "max-age=63072000; includeSubDomains"
         }
     }
 
